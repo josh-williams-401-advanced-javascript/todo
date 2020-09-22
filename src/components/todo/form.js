@@ -17,7 +17,6 @@ export default (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     e.target.reset();
-    console.log(item)
     props.handleSubmit(item);
     const newItem = {};
     setItem(newItem);

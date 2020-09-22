@@ -31,9 +31,10 @@ Add new items to the to-do list to see them pop up on the left. Click on items t
 
 #### Tests
 
-- How do you run tests?
-- Any tests of note?
-- Describe any tests that you did not complete, skipped, etc
+There is one test that shows that typing in a new list item and clicking submit will render it to the screen.
+```
+npm test
+```
 
 #### UML
 
