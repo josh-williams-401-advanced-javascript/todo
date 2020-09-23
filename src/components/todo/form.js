@@ -1,13 +1,14 @@
-import React /*, { useState }*/ from "react";
+import React from "react";
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import '../App.scss';
 import useForm from '../../hooks/form'
 
+
 export default (props) => {
 
-  const[handleInputChange, handleSubmit/*, values*/] = useForm(formCallback);  
+  const[handleInputChange, handleSubmit] = useForm(formCallback);  
 
   function formCallback(value){
     props.handleSubmit(value);

@@ -31,7 +31,9 @@ Add new items to the to-do list to see them pop up on the right. Click on the pi
 
 #### Tests
 
-There is one test that shows that typing in a new list item and clicking submit will render it to the screen.
+At the moment, I cannot get my test to work, so I will spend more time on it tomorrow.  
+
+There is one test that shows that typing in a new list item and clicking submit will render it to the screen. 
 ```
 npm test
 ```
