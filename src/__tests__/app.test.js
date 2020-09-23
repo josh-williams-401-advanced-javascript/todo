@@ -4,11 +4,12 @@ import '@testing-library/jest-dom/extend-expect'
 import App from '../app.js'
 
 describe('app tests', () => {
-  it('will add a new to do list item to the screen that is incomplete', () => {
+  it('will add a new to do list item to the screen that is incomplete', async () => {
+    
 
     render(<App />);
 
-    const toDoListInput = screen.getByPlaceholderText('Add To Do List Item');
+    const toDoListInput = screen.getByPlaceholderText('Item Details');
 
     fireEvent.change(toDoListInput, {target: {value: 'Go Jogging'}})
 
@@ -17,9 +18,12 @@ describe('app tests', () => {
     })
 
     fireEvent.click(button[0]);
-
-    expect(screen.getByText('Go Jogging')).toBeTruthy();
-    
-    expect(screen.getByText('Go Jogging')).toHaveClass('list-group-item-success')
+  
+      expect(screen.getByText('Go Jogging')).not.toBeTruthy();
+  
+      expect(screen.getByText('Go Jogging')).toHaveClass('list-group-item-success')
   })  
 })
+
+
+
