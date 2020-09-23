@@ -17,5 +17,5 @@ export default (callback) => {
     setValues(newItem);
   };
 
-  return [handleInputChange, handleSubmit];
+  return [handleInputChange, handleSubmit, values];
 }

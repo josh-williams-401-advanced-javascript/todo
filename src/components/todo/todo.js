@@ -10,38 +10,88 @@ import '../App.scss';
 
 import './todo.scss';
 
+
+const todoAPI = 'https://josh-williams-api-server.herokuapp.com/api/v1/todo';
+
+
+
 export default () => {
 
   const [list, setList] = useState([]);
 
-  const addItem = (item) => {
-    item._id = Math.random();
-    item.complete = false;
-    setList([...list, item]);
+  const addItem = async (item) => {
+
+    try {
+      const results = await axios({
+        url: todoAPI,
+        method: 'Post',
+        data: item,
+      });
+      setList([...list, results.data]);
+    } catch (e) {
+      console.log(e);
+    }
   };
+
+
 
   const toggleComplete = id => {
 
     let item = list.filter(i => i._id === id)[0] || {};
 
     if (item._id) {
+
       item.complete = !item.complete;
+
+      toggleDatabase(id, item);
+
       let newList = list.map(listItem => listItem._id === item._id ? item : listItem);
+
       setList(newList);
     }
 
   };
+
+  const toggleDatabase = async (id, item) => {
+    try {
+      const results = await axios({
+        url: `${todoAPI}/${id}`,
+        method: 'PUT',
+        data: item,
+      });
+      return results.data;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const deleteItem = async id => {
+    try {
+
+      await axios({
+        url: `${todoAPI}/${id}`,
+        method: 'DELETE',
+      });
+
+      const newList = list.filter(list => list._id !== id );
+
+      setList(newList);
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   useEffect(() => {
     async function fetchData() {
 
       try {
         const results = await axios({
-          url: 'https://josh-williams-api-server.herokuapp.com/api/v1/todo',
+          url: todoAPI,
           method: 'GET',
           data: '',
         });
-        console.log(results.data.results);
+
         setList(results.data.results);
 
       } catch (e) {
@@ -59,23 +109,27 @@ export default () => {
 
         <Row style={{ marginBottom: "20px" }}>
           <Col className="text-light bg-dark h2" style={{ padding: '20px' }}>
-            There are {list.filter(item => !item.complete).length} Items To Complete
+            To Do List Manager ({list.filter(item => !item.complete).length})
         </Col>
 
         </Row >
 
         <Row>
           <Col md={5}>
-            <TodoForm handleSubmit={addItem} />
+            <TodoForm
+              handleSubmit={addItem}
+            // addToDb={addToDatabase}
+            />
           </Col>
-          <Col md={5}>
+          <Col md={7}>
             <TodoList
               list={list}
               handleComplete={toggleComplete}
-            />
+              delete={deleteItem}
+              />
           </Col>
-        </Row>
-      </Container>
+              </Row>
+              </Container>
     </>
   );
 }
