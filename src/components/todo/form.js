@@ -1,26 +1,17 @@
 import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import '../App.scss';
+import useForm from '../../hooks/form'
 
 export default (props) => {
 
-  const [item, setItem] = useState({});
+  const[handleInputChange, handleSubmit] = useForm(formCallback);  
 
-
-  const handleInputChange = e => {
-    setItem({ ...item, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    e.target.reset();
-    props.handleSubmit(item);
-    const newItem = {};
-    setItem(newItem);
-  };
+  function formCallback(value){
+    props.handleSubmit(value)
+  }
 
   return (
     <>

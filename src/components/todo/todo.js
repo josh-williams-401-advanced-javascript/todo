@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
+import axios from 'axios';
 
 import TodoForm from './form.js';
 import TodoList from './list.js';
@@ -33,15 +33,23 @@ export default () => {
   };
 
   useEffect(() => {
-    let firstList = [
-      { _id: 1, complete: false, text: 'Clean the Kitchen', difficulty: 3, assignee: 'Person A' },
-      { _id: 2, complete: false, text: 'Do the Laundry', difficulty: 2, assignee: 'Person A' },
-      { _id: 3, complete: false, text: 'Walk the Dog', difficulty: 4, assignee: 'Person B' },
-      { _id: 4, complete: true, text: 'Do Homework', difficulty: 3, assignee: 'Person C' },
-      { _id: 5, complete: false, text: 'Take a Nap', difficulty: 1, assignee: 'Person B' },
-    ];
+    async function fetchData() {
 
-    setList(firstList);
+      try {
+        const results = await axios({
+          url: 'https://josh-williams-api-server.herokuapp.com/api/v1/todo',
+          method: 'GET',
+          data: '',
+        });
+        console.log(results.data.results);
+        setList(results.data.results);
+
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    fetchData()
   }, [])
 
 
@@ -49,24 +57,24 @@ export default () => {
     <>
       <Container fluid="true" style={{ margin: "20px 100px" }}>
 
-        <Row style={{marginBottom:"20px"}}>
+        <Row style={{ marginBottom: "20px" }}>
           <Col className="text-light bg-dark h2" style={{ padding: '20px' }}>
             There are {list.filter(item => !item.complete).length} Items To Complete
         </Col>
 
         </Row >
 
-          <Row>
-            <Col md={5}>
-              <TodoForm handleSubmit={addItem} />
-            </Col>
-            <Col md={5}>
-              <TodoList
-                list={list}
-                handleComplete={toggleComplete}
-              />
-            </Col>
-          </Row>
+        <Row>
+          <Col md={5}>
+            <TodoForm handleSubmit={addItem} />
+          </Col>
+          <Col md={5}>
+            <TodoList
+              list={list}
+              handleComplete={toggleComplete}
+            />
+          </Col>
+        </Row>
       </Container>
     </>
   );
