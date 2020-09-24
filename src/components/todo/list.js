@@ -1,35 +1,37 @@
-import React, { useContext, useState, useEffect} from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Toast from 'react-bootstrap/Toast';
 import Badge from 'react-bootstrap/Badge';
 import Pagination from 'react-bootstrap/Pagination';
 import { SortContext } from '../../context/sort-field'
 import { CompleteContext } from '../../context/show-complete'
+import { NumPerScreenContext } from '../../context/num-per-screen'
 
 export default (props) => {
 
   const sortContext = useContext(SortContext);
   const completeContext = useContext(CompleteContext);
+  const numPerScreenContext = useContext(NumPerScreenContext);
+
+  const { numPer } = numPerScreenContext;
 
   const [activePage, setActivePage] = useState(1);
-  const [count, setCount] = useState(1);
-  const [pagesToRender, setPagesToRender] = useState([]);
+  const [pagesToRender, setPagesToRender] = useState(props.list);
 
   const numOfPaginationPages = () => {
     if (!completeContext.showComplete) {
-      const pages = props.list.filter(item => !item.complete).length / 3;
+      const pages = props.list.filter(item => !item.complete).length / numPer;
       return Math.ceil(pages)
     }
     else {
-      return Math.ceil(props.list.length / 3);
+      return Math.ceil(props.list.length / numPer);
     }
   }
 
   const paginate = () => {
-
     let items = [];
     for (let i = 1; i <= numOfPaginationPages(); i++) {
       items.push(
-        <Pagination.Item key={i} active={i === activePage} onClick={setActivePage} activeLabel={i === activePage && '(current)'}>
+        <Pagination.Item  key={i} active={i === activePage} onClick={() => changePage(i)} activeLabel={i === activePage && '(current)'}>
           {i}
         </Pagination.Item>
       )
@@ -37,70 +39,68 @@ export default (props) => {
     return items;
   }
 
-  // const renderItem = async (i) => {
-  //   if (i >= (activePage * 3 - 2) && count === 2) {
-  //     // if (count <= 3) {
-  //       // if (i === 1) {
-  //       // await setCount(count + 1);
-  //       return true;
-  //     // }
-  //   } else {
-  //     return false;
-  //   }
-  // }
-  // updateCount();
-  // const updateCount = (i) => count === 3 ? setCount(0): setCount(i + 1);
-  // useEffect(() => {
-  // }, [updateCount])
+  
+  const changePage = async (num) => {
+    await setActivePage(num);
+    let pages = props.list;
+    if (!completeContext.showComplete) {
+      pages = pages.filter(item => item.complete === false);
+    }
+    pages = pages.sort((a, b) => a[sortContext.sortBy] < b[sortContext.sortBy] ? -1 : 1)
+    
+    let newPages = pages.slice((num * numPer - numPer),(num * numPer));
+    await setPagesToRender(newPages);
+  }
 
   useEffect(() => {
-   /*await in diff function*/ setPagesToRender(props.list);
-    let pages;
-    if(!completeContext.showComplete) {
-      pages = props.list.filter(item => item.complete === false);
-        console.log(pages)
-      }
-  },[props.list])
+    let pages = props.list;
+    if (!completeContext.showComplete) {
+      pages = pages.filter(item => item.complete === false);
+    }
+    pages = pages.sort((a, b) => a[sortContext.sortBy] < b[sortContext.sortBy] ? -1 : 1)
+    setPagesToRender(pages.slice((activePage * numPer - numPer),(activePage * numPer)));
+
+    
+
+  }, [props.list, completeContext.showComplete, sortContext.sortBy])
+
+  async function onComplete (id) {
+    await props.handleComplete(id);
+  }
 
   return (
     <>
       {
-        // props.list
         pagesToRender
-          .sort((a, b) => a[sortContext.sortBy] < b[sortContext.sortBy] ? -1 : 1)
-          .map((item, i) =>
+          .map(item =>
             (completeContext.showComplete || !item.complete)
-              // && ((i + 1 >= (activePage * 3 - 2)) && count <= 3)
-              && (                
-                <Toast
-                  key={item._id}
-                  onClose={() => props.delete(item._id)}
-                  style={{ position: 'relative' }}
-                >
-                  {/* {setCount((count + 1) % 3)} */}
-                  {console.log(i)}
-                  <Toast.Header>
-                    <Badge
-                      pill
-                      style={{ marginRight: '15px' }}
-                      onClick={() => props.handleComplete(item._id)}
-                      variant={item.complete ? 'danger' : 'success'}>
-                      {item.complete ? 'Complete' : 'Pending'}
-                    </Badge>
-                    <strong className="mr-auto">{item.assignee}</strong>
-                  </Toast.Header>
-                  <Toast.Body>
-                    {item.text}
-                  </Toast.Body>
-                  <small style={{ position: 'absolute', bottom: 5, right: 5 }}>Difficulty: {item.difficulty}</small>
-                </Toast>
-              )
+            && (
+              <Toast
+                key={item._id}
+                onClose={() => props.delete(item._id)}
+                style={{ position: 'relative' }}
+              >
+                <Toast.Header>
+                  <Badge
+                    pill
+                    style={{ marginRight: '15px' }}
+                    onClick={() => onComplete(item._id)}
+                    variant={item.complete ? 'danger' : 'success'}>
+                    {item.complete ? 'Complete' : 'Pending'}
+                  </Badge>
+                  <strong className="mr-auto">{item.assignee}</strong>
+                </Toast.Header>
+                <Toast.Body>
+                  {item.text}
+                </Toast.Body>
+                <small style={{ position: 'absolute', bottom: 5, right: 5 }}>Difficulty: {item.difficulty}</small>
+              </Toast>
             )
-          
+          )
+
       }
 
-
-      <Pagination>{paginate()}</Pagination>
+      <Pagination size="lg">{paginate()}</Pagination>
     </>
 
   )

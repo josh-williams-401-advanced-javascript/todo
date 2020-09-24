@@ -29,16 +29,16 @@ npm start
 #### How to use your library (where applicable)
 Add new items to the to-do list to see them pop up on the right. Click on the pill on the top left of each card to watch the count go up and down and to see the style of the list items change. Delete an item by clicking the 'x' on the top right of each item.
 
+To mess around with the app, change the initial `useState()` values of the files in the context folder, to see a different number of items per screen, whether the app shows completed items or not, and what the list items are sorted by.
+
 #### Tests
 
-At the moment, I cannot get my test to work, so I will spend more time on it tomorrow.  
-
-There is one test that shows that typing in a new list item and clicking submit will render it to the screen. 
+I am having trouble writing tests in a reasonable amount of time.
 ```
 npm test
 ```
 
 #### UML
 
-![UML](./images/uml-todo-lab-32.png)
+![UML](./images/uml-todo-lab-33.png)
 
