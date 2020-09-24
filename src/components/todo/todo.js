@@ -27,7 +27,7 @@ export default () => {
 
   useEffect(() => {
     apiCall(todoAPI, 'GET')
-  })
+  }, [])
 
 
   return (
