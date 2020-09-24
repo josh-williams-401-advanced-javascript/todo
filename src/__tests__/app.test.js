@@ -19,7 +19,7 @@ describe('app tests', () => {
 
     fireEvent.click(button[0]);
   
-      expect(screen.getByText('Go Jogging')).not.toBeTruthy();
+      expect(screen.getByText('Go Jogging')).toBeTruthy();
   
       expect(screen.getByText('Go Jogging')).toHaveClass('list-group-item-success')
   })  
