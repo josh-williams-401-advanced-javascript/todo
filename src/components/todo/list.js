@@ -60,9 +60,7 @@ export default (props) => {
     pages = pages.sort((a, b) => a[sortContext.sortBy] < b[sortContext.sortBy] ? -1 : 1)
     setPagesToRender(pages.slice((activePage * numPer - numPer),(activePage * numPer)));
 
-    
-
-  }, [props.list, completeContext.showComplete, sortContext.sortBy])
+  }, [props.list, completeContext.showComplete, sortContext.sortBy, activePage, numPer])
 
   async function onComplete (id) {
     await props.handleComplete(id);
