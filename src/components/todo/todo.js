@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import axios from 'axios';
 
 import TodoForm from './form.js';
 import TodoList from './list.js';
@@ -25,11 +26,19 @@ export default () => {
     }
   };
 
-  const initialCall = useCallback(() => apiCall(todoAPI, 'GET'), [apiCall]);
-
   useEffect(() => {
-    initialCall();
-  }, [initialCall])
+    apiCall(todoAPI,'GET')
+    // console.log('is useEffect TODO')
+
+    // Use this somehow to avoid warning!!
+    // axios({
+    //   url:'https://josh-williams-api-server.herokuapp.com/api/v1/todo', method:'GET'
+    // })
+    //   .then(results => {
+    //   setList(results.data.results);
+    // })
+    //   .catch(e => console.log(e));
+  }, [])
 
 
   return (
