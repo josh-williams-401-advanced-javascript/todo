@@ -8,6 +8,7 @@ export default (callback) => {
   const apiCall = async  (url, method, data = '') => {
     try {
       const results = await _apiCall({ url, method, data });
+      console.log(results)
       let newList;
       switch (method) {
         case 'GET':
