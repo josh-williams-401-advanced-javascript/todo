@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -25,9 +25,11 @@ export default () => {
     }
   };
 
+  const initialCall = useCallback(() => apiCall(todoAPI, 'GET'), [apiCall]);
+
   useEffect(() => {
-    apiCall(todoAPI, 'GET')
-  }, [])
+    initialCall();
+  }, [initialCall])
 
 
   return (
