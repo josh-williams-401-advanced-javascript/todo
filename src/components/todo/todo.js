@@ -66,11 +66,12 @@ export default () => {
           <Col md={5}>
             <TodoForm
               handleSubmit={value => apiCall(todoAPI, 'POST', value)}
-            />
+             />
           </Col>
             </Auth>
+            
             <Auth capability = "read">
-          <Col md={7}>
+          <Col>
             <TodoList
               list={list}
               handleComplete={toggleComplete}

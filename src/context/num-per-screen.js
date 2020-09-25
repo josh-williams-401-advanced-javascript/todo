@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 export const NumPerScreenContext = React.createContext();
 
 function NumPerScreenProvider (props) {
-  const [numPer, /*setSortBy*/] = useState(3);
+  const [numPer, /*setSortBy*/] = useState(4);
 
   const state = {
     numPer,
@@ -16,6 +16,5 @@ function NumPerScreenProvider (props) {
   )
 
 }
-
 
 export default NumPerScreenProvider;

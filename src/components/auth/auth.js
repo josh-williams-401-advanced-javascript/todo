@@ -11,8 +11,7 @@ const Auth = (props) => {
 
   const OK = () => {
 
-    let ok =
-      context.loggedIn &&
+    let ok = context.loggedIn &&
       (props.capability ? context.can(props.capability) : true);
 
     setOkToRender(ok)
@@ -29,7 +28,6 @@ const Auth = (props) => {
   useEffect(() => {
     OK();
   }, [OK]);
-
 
   return (
     <If condition={okToRender}>

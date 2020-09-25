@@ -13,6 +13,5 @@ export default function CompleteProvider(props) {
     <CompleteContext.Provider value={state}>
       {props.children}
     </CompleteContext.Provider>
-
   )
 }

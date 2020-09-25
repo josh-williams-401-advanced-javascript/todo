@@ -26,6 +26,7 @@ export default (props) => {
       return Math.ceil(pages)
     }
     else {
+
       return Math.ceil(props.list.length / numPer);
     }
   }
@@ -69,17 +70,35 @@ export default (props) => {
     await props.handleComplete(id);
   }
 
+  function calcMargin (i) {
+    if(i === pagesToRender.length - 1 && activePage === numOfPaginationPages()) {
+
+      let marginBottom = activePage * numPer - props.list.length;
+
+      if (!completeContext.showComplete) {
+        marginBottom = activePage * numPer - props.list.filter(item => !item.complete).length
+      }
+      return marginBottom * 91 + 22 + 'px';
+    }
+    return '15px';
+  }
+
   return (
     <>
       {
         pagesToRender
-          .map(item =>
+          .map((item,i) =>
             (completeContext.showComplete || !item.complete)
             && (
               <Toast
                 key={item._id}
                 onClose={() => props.delete(item._id)}
-                style={{ position: 'relative' }}
+                style={{
+                  position: 'relative',
+                  maxWidth: '100%',
+                  marginBottom: calcMargin(i),
+                  minHeight: '80px'
+                }}
               >
                 <Toast.Header
                 closeButton={loginContext.can('delete')}
