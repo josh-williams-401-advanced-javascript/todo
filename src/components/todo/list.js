@@ -5,12 +5,15 @@ import Pagination from 'react-bootstrap/Pagination';
 import { SortContext } from '../../context/sort-field'
 import { CompleteContext } from '../../context/show-complete'
 import { NumPerScreenContext } from '../../context/num-per-screen'
+import { LoginContext } from '../auth/context';
+import Auth from '../auth/auth';
 
 export default (props) => {
 
   const sortContext = useContext(SortContext);
   const completeContext = useContext(CompleteContext);
   const numPerScreenContext = useContext(NumPerScreenContext);
+  const loginContext = useContext(LoginContext);
 
   const { numPer } = numPerScreenContext;
 
@@ -23,6 +26,7 @@ export default (props) => {
       return Math.ceil(pages)
     }
     else {
+
       return Math.ceil(props.list.length / numPer);
     }
   }
@@ -66,26 +70,49 @@ export default (props) => {
     await props.handleComplete(id);
   }
 
+  function calcMargin (i) {
+    if(i === pagesToRender.length - 1 && activePage === numOfPaginationPages()) {
+
+      let marginBottom = activePage * numPer - props.list.length;
+
+      if (!completeContext.showComplete) {
+        marginBottom = activePage * numPer - props.list.filter(item => !item.complete).length
+      }
+      return marginBottom * 91 + 22 + 'px';
+    }
+    return '15px';
+  }
+
   return (
     <>
       {
         pagesToRender
-          .map(item =>
+          .map((item,i) =>
             (completeContext.showComplete || !item.complete)
             && (
               <Toast
                 key={item._id}
                 onClose={() => props.delete(item._id)}
-                style={{ position: 'relative' }}
+                style={{
+                  position: 'relative',
+                  maxWidth: '100%',
+                  marginBottom: calcMargin(i),
+                  minHeight: '80px'
+                }}
               >
-                <Toast.Header>
+                <Toast.Header
+                closeButton={loginContext.can('delete')}
+                >
+                  <Auth capabilty="update">
                   <Badge
                     pill
-                    style={{ marginRight: '15px' }}
-                    onClick={() => onComplete(item._id)}
+                    style={{ marginRight: '15px', cursor:'pointer' }}
+                    onClick={() => loginContext.can('update') && 
+                    onComplete(item._id)}
                     variant={item.complete ? 'danger' : 'success'}>
                     {item.complete ? 'Complete' : 'Pending'}
                   </Badge>
+                  </Auth>
                   <strong className="mr-auto">{item.assignee}</strong>
                 </Toast.Header>
                 <Toast.Body>

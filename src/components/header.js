@@ -1,6 +1,8 @@
 import React from 'react'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
+import Login from './auth/login';
+// import Auth from './auth/auth'
 
 export default () => {
   return (
@@ -9,6 +11,8 @@ export default () => {
         <Nav className="mr-auto">
           <Nav.Link>Home</Nav.Link>
         </Nav>
+          <Login />
+
       </Navbar>
 
     </header>

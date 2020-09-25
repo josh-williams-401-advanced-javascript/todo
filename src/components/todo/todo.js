@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import axios from 'axios';
+// import axios from 'axios';
+import Auth from '../auth/auth'
+
+
 
 import TodoForm from './form.js';
 import TodoList from './list.js';
@@ -10,6 +13,7 @@ import useAjax from '../../hooks/ajax'
 import '../App.scss';
 
 const todoAPI = 'https://josh-williams-api-server.herokuapp.com/api/v1/todo';
+// const todoAPI = 'https://api-js401.herokuapp.com/api/v1/todo'
 
 export default () => {
 
@@ -43,7 +47,9 @@ export default () => {
 
   return (
     <>
+    
       <Container fluid="true" style={{ margin: "20px 100px" }}>
+      <Auth>
 
         <Row style={{ marginBottom: "20px" }}>
           <Col
@@ -53,22 +59,28 @@ export default () => {
             To Do List Manager ({list.filter(item => !item.complete).length})
         </Col>
         </Row >
+      </Auth>
 
         <Row>
+            <Auth capability="create">
           <Col md={5}>
             <TodoForm
               handleSubmit={value => apiCall(todoAPI, 'POST', value)}
-            />
+             />
           </Col>
-
-          <Col md={7}>
+            </Auth>
+            
+            <Auth capability = "read">
+          <Col>
             <TodoList
               list={list}
               handleComplete={toggleComplete}
               delete={id => apiCall(`${todoAPI}/${id}`, 'DELETE', id)}
             />
           </Col>
+          </Auth>
         </Row>
+
 
       </Container>
     </>
