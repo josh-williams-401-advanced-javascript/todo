@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 
 import { LoginContext } from './context';
 
@@ -9,7 +9,7 @@ const Auth = (props) => {
   const context = useContext(LoginContext);
   const [okToRender, setOkToRender] = useState(false)
 
-  const OK = () => {
+  const OK = useCallback(() => {
 
     let ok = context.loggedIn &&
       (props.capability ? context.can(props.capability) : true);
@@ -23,7 +23,16 @@ const Auth = (props) => {
 
     return ok;
 
-  }
+  },[context, props.capability])
+
+
+  // const getToDoList = useCallback( async () => {
+  //   const options = {
+  //     method: 'get',
+  //     url: `${API}/api/v1/todo`,
+  //   };
+  //   request(options);
+  // }, [request]);
 
   useEffect(() => {
     OK();
