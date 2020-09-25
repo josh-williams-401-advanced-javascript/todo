@@ -5,6 +5,7 @@
 ### Author: Joshua Williams
 
 ### Links and Resources
+ - Live Site: [Nelify Deployment](https://ecstatic-montalcini-5c61c4.netlify.app/)
  - Repository: [GitHub Master](https://github.com/josh-williams-401-advanced-javascript/todo)
  - API: [Heroku API](https://josh-williams-api-server.herokuapp.com/api/v1/todo)
  - Auth API: [Class API](https://api-js401.herokuapp.com)
