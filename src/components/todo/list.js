@@ -5,12 +5,15 @@ import Pagination from 'react-bootstrap/Pagination';
 import { SortContext } from '../../context/sort-field'
 import { CompleteContext } from '../../context/show-complete'
 import { NumPerScreenContext } from '../../context/num-per-screen'
+import { LoginContext } from '../auth/context';
+import Auth from '../auth/auth';
 
 export default (props) => {
 
   const sortContext = useContext(SortContext);
   const completeContext = useContext(CompleteContext);
   const numPerScreenContext = useContext(NumPerScreenContext);
+  const loginContext = useContext(LoginContext);
 
   const { numPer } = numPerScreenContext;
 
@@ -78,14 +81,19 @@ export default (props) => {
                 onClose={() => props.delete(item._id)}
                 style={{ position: 'relative' }}
               >
-                <Toast.Header>
+                <Toast.Header
+                closeButton={loginContext.can('delete')}
+                >
+                  <Auth capabilty="update">
                   <Badge
                     pill
-                    style={{ marginRight: '15px' }}
-                    onClick={() => onComplete(item._id)}
+                    style={{ marginRight: '15px', cursor:'pointer' }}
+                    onClick={() => loginContext.can('update') && 
+                    onComplete(item._id)}
                     variant={item.complete ? 'danger' : 'success'}>
                     {item.complete ? 'Complete' : 'Pending'}
                   </Badge>
+                  </Auth>
                   <strong className="mr-auto">{item.assignee}</strong>
                 </Toast.Header>
                 <Toast.Body>

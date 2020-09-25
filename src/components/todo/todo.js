@@ -5,6 +5,8 @@ import Col from 'react-bootstrap/Col';
 // import axios from 'axios';
 import Auth from '../auth/auth'
 
+
+
 import TodoForm from './form.js';
 import TodoList from './list.js';
 import useAjax from '../../hooks/ajax'
@@ -13,7 +15,7 @@ import '../App.scss';
 const todoAPI = 'https://josh-williams-api-server.herokuapp.com/api/v1/todo';
 // const todoAPI = 'https://api-js401.herokuapp.com/api/v1/todo'
 
-export default ( ) => {
+export default () => {
 
   const updateList = (newList) => setList(newList);
 
@@ -47,6 +49,7 @@ export default ( ) => {
     <>
     
       <Container fluid="true" style={{ margin: "20px 100px" }}>
+      <Auth>
 
         <Row style={{ marginBottom: "20px" }}>
           <Col
@@ -56,9 +59,10 @@ export default ( ) => {
             To Do List Manager ({list.filter(item => !item.complete).length})
         </Col>
         </Row >
+      </Auth>
 
         <Row>
-            <Auth capability="update">
+            <Auth capability="create">
           <Col md={5}>
             <TodoForm
               handleSubmit={value => apiCall(todoAPI, 'POST', value)}

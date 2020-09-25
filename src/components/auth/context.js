@@ -16,7 +16,6 @@ function LoginProvider (props) {
 
 
   const can = (capability) => {
-    console.log('in can')
     return state.user?.capabilities?.includes(capability);
   }
 
@@ -62,8 +61,6 @@ function LoginProvider (props) {
     const qs = new URLSearchParams(window.location.search);
     const cookieToken = cookie.load('auth');
     const token = qs.get('token') || cookieToken || null;
-
-    console.log('in component did mount')
     validateToken(token);
   },[]);
 
