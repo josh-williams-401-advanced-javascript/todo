@@ -17,7 +17,6 @@ const Auth = (props) => {
     setOkToRender(ok)
 
     if (!ok) {
-      console.log(context.can(props.capability));
       console.warn('Not Authorized In');
     }
 
@@ -26,20 +25,12 @@ const Auth = (props) => {
   },[context, props.capability])
 
 
-  // const getToDoList = useCallback( async () => {
-  //   const options = {
-  //     method: 'get',
-  //     url: `${API}/api/v1/todo`,
-  //   };
-  //   request(options);
-  // }, [request]);
-
   useEffect(() => {
     OK();
   }, [OK]);
 
   return (
-    <If condition={okToRender}>
+    <If condition={okToRender || false}>
       {props.children}
     </If>
   );
