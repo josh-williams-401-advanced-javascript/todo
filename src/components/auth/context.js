@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import cookie from 'react-cookies';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
@@ -29,7 +29,7 @@ function LoginProvider (props) {
       .catch(console.error);
   }
 
-  const validateToken = token => {
+  const validateToken = useCallback( token => {
     try {
       const user = jwt.verify(token, process.env.REACT_APP_SECRET);
       console.log(user);
@@ -41,7 +41,7 @@ function LoginProvider (props) {
       console.log('Token Validation Error', e);
     }
 
-  };
+  },[]);
 
   const logout = () => {
     setLoginState(false, null, {});
@@ -62,7 +62,7 @@ function LoginProvider (props) {
     const cookieToken = cookie.load('auth');
     const token = qs.get('token') || cookieToken || null;
     validateToken(token);
-  },[]);
+  },[validateToken]);
 
   const state = {
     loggedIn,

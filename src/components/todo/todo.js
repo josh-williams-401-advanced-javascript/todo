@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -30,8 +30,18 @@ export default () => {
     }
   };
 
+
+  const getList = useCallback(() => {
+    if (!list.length) {
+
+      apiCall(todoAPI,'GET')
+    }
+  }, [list, apiCall])
+
+
+
   useEffect(() => {
-    apiCall(todoAPI,'GET')
+    getList()
     // console.log('is useEffect TODO')
 
     // Use this somehow to avoid warning!!
@@ -42,14 +52,14 @@ export default () => {
     //   setList(results.data.results);
     // })
     //   .catch(e => console.log(e));
-  }, [])
+  }, [getList])
 
 
   return (
     <>
     
       <Container fluid="true" style={{ margin: "20px 100px" }}>
-      <Auth>
+      <Auth capability="read">
 
         <Row style={{ marginBottom: "20px" }}>
           <Col

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 
 import { LoginContext } from './context';
 
@@ -9,7 +9,7 @@ const Auth = (props) => {
   const context = useContext(LoginContext);
   const [okToRender, setOkToRender] = useState(false)
 
-  const OK = () => {
+  const OK = useCallback(() => {
 
     let ok = context.loggedIn &&
       (props.capability ? context.can(props.capability) : true);
@@ -17,20 +17,20 @@ const Auth = (props) => {
     setOkToRender(ok)
 
     if (!ok) {
-      console.log(context.can(props.capability));
       console.warn('Not Authorized In');
     }
 
     return ok;
 
-  }
+  },[context, props.capability])
+
 
   useEffect(() => {
     OK();
   }, [OK]);
 
   return (
-    <If condition={okToRender}>
+    <If condition={okToRender || false}>
       {props.children}
     </If>
   );
