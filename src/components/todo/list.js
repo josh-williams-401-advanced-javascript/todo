@@ -83,6 +83,8 @@ export default (props) => {
     return '15px';
   }
 
+const badgeCursor = loginContext.can('update') ? 'pointer' : 'default';
+
   return (
     <>
       {
@@ -106,7 +108,7 @@ export default (props) => {
                   <Auth capabilty="update">
                   <Badge
                     pill
-                    style={{ marginRight: '15px', cursor:'pointer' }}
+                    style={{ marginRight: '15px', cursor: badgeCursor}}
                     onClick={() => loginContext.can('update') && 
                     onComplete(item._id)}
                     variant={item.complete ? 'danger' : 'success'}>
