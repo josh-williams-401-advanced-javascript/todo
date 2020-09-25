@@ -6,21 +6,24 @@ import Header from './components/header'
 import SortProvider from './context/sort-field';
 import CompleteProvider from './context/show-complete';
 import NumPerScreenProvider from './context/num-per-screen';
+import LoginProvider from './components/auth/context'
 
 export default () => (
-      <>
+  <>
+    <LoginProvider>
 
-        <Header />
+      <Header />
 
       <SortProvider>
         <CompleteProvider>
           <NumPerScreenProvider>
 
-        <ToDo />
+            <ToDo />
 
           </NumPerScreenProvider>
         </CompleteProvider>
       </SortProvider>
-        
-      </>
-    );
+      
+    </LoginProvider>
+  </>
+);

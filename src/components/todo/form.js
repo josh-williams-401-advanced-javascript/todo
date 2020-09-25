@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import '../App.scss';
 import useForm from '../../hooks/form'
+import Auth from '../auth/auth';
 
 
 export default (props) => {
@@ -16,6 +17,7 @@ export default (props) => {
 
   return (
     <>
+    <Auth capabilty="update">
       <Form onSubmit={handleSubmit}>
         <Card>
           <Card.Body>
@@ -55,6 +57,7 @@ export default (props) => {
           </Card.Body>
         </Card>
       </Form>
+      </Auth>
     </>
   );
 
